@@ -27,70 +27,70 @@ def talk(text):
     engine.say(text)
     engine.runAndWait()
 
-def take_instruction():
+def take_command():
     listener = sr.Recognizer()
-    instruction = ""
+    command = ""
     try:
         with sr.Microphone() as origin:
             print('listening...')
             listener.adjust_for_ambient_noise(origin)
             voice = listener.listen(origin)
-            instruction = listener.recognize_google(voice)
-            instruction = instruction.lower()
-            if 'happy' in instruction:
-                instruction = instruction.replace('happy', '')
-                #print(instruction)
+            command = listener.recognize_google(voice)
+            command = command.lower()
+            if 'happy' in command:
+                command = command.replace('happy', '')
+                #print(command)
 
     except Exception as e:
         print(e)
         pass
 
-    return instruction
+    return command
 
 def run_happy():
     while True:
-        instruction = take_instruction()
-        print(instruction)
+        command = take_command()
+        print(command)
 
-        if 'open' in instruction:
+        if 'open' in command:
             for key in sites:
-                if key in instruction:
+                if key in command:
                     open_website(sites[key], key)
                     break
 
-        elif 'play' in instruction:
-            song = instruction.replace('play', '')
+        elif 'play' in command:
+            song = command.replace('play', '')
             print('Playing ' + song)
             talk('Playing' + song)
             pywhatkit.playonyt(song)
 
-        elif 'time' in instruction:
+        elif 'time' in command:
             time = datetime.datetime.now().strftime('%I:%M %p')
             print('Current time is ' + time)
             talk('Current time is ' + time)
 
-        elif 'date' in instruction:
+        elif 'date' in command:
             print('sorry, I have a headache')
             talk('sorry, I have a headache')
 
-        elif 'who is' in instruction:
-            person = instruction.replace('who is', '')
+        elif 'who is' in command:
+            person = command.replace('who is', '')
             info = wikipedia.summary(person, 2)
             print(info)
             talk(info)
 
-        elif 'what is' in instruction:
-            thing = instruction.replace('what is', '')
+        elif 'what is' in command:
+            thing = command.replace('what is', '')
             info = wikipedia.summary(thing, 2)
             print(info)
             talk(info)
 
-        elif 'joke' in instruction:
+        elif 'joke' in command:
             joke = pyjokes.get_joke()
             print(joke)
             talk(joke)
 
-        elif 'bye' in instruction:
+        elif 'bye' in command:
             print('Ok bye. Have a nice day')
             talk('Ok bye. Have a nice day')
             exit()
