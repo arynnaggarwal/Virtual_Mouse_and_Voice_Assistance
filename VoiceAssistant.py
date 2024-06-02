@@ -5,7 +5,6 @@ import datetime
 import wikipedia
 import pyjokes
 import webbrowser
-import sys
 
 listener = sr.Recognizer()
 engine = pyttsx3.init()
@@ -24,8 +23,12 @@ def open_website(site_url, key):
     webbrowser.open(site_url)
 
 def talk(text):
-    engine.say(text)
-    engine.runAndWait()
+    try:
+        engine.say(text)
+        engine.runAndWait()
+    except Exception as e:
+        print(f"Error in TTS: {e}")
+
 
 def take_command():
     listener = sr.Recognizer()
@@ -60,7 +63,7 @@ def run_happy():
 
         elif 'play' in command:
             song = command.replace('play', '')
-            print('Playing ' + song)
+            print('Playing' + song)
             talk('Playing' + song)
             pywhatkit.playonyt(song)
 
@@ -100,5 +103,15 @@ def run_happy():
             talk("Sorry, I don't understand that command. Please Repeat it.")
 
 
+def main():
+    try:
+        print('Hello, I am happy and how can I help you today?')
+        talk('Hello, I am happy and how can I help you today?')
+        while True:
+            run_happy()
+    except KeyboardInterrupt:
+        print("Program terminated by user.")
+        exit()
+
 if __name__ == "__main__":
-    run_happy()
+    main()
